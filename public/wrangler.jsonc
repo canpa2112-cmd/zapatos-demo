@@ -1,1 +1,7 @@
-
+{
+  "name": "zapatos-demo",
+  "compatibility_date": "2026-11-23",
+  "assets": {
+    "directory": "./public"
+  }
+}
