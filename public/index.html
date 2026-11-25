@@ -3,212 +3,264 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Zapatos Urbanos · Medellín</title>
+  <meta name="description" content="CCSxMDE. Catálogo de tenis y tienda de prueba en Medellín.">
+  <title>CCSxMDE | Tenis en Medellín</title>
   <style>
+    :root {
+      color-scheme: dark;
+      --fondo: #111014;
+      --panel: #1c1a21;
+      --texto: #f8f7fa;
+      --suave: #d0cbd7;
+      --lima: #dbfb62;
+      --violeta: #c3a5ff;
+      --borde: #786d86;
+      --titulos: "Impact", "Arial Narrow", system-ui, sans-serif;
+    }
+
     * { box-sizing: border-box; }
+    html { scroll-padding-top: 1rem; }
+    body { margin: 0; background: var(--fondo); color: var(--texto); font: 1rem/1.5 system-ui, sans-serif; }
+    a { color: inherit; }
+    button, input, select { font: inherit; }
+    button { cursor: pointer; }
+    img { display: block; max-width: 100%; }
+    [hidden] { display: none !important; }
+    :focus-visible { outline: 3px solid var(--lima); outline-offset: 4px; }
+    .ancho { width: min(100% - 2rem, 73rem); margin-inline: auto; }
+    .salto { position: absolute; top: 1rem; left: 1rem; z-index: 2; transform: translateY(-200%); }
+    .salto:focus { transform: none; }
 
-    body {
-      margin: 0;
-      font: 1rem system-ui, sans-serif;
-      color: #151515;
-      background: #f5f5f5;
-    }
-
-    header, footer {
-      padding: 1rem max(1rem, calc((100% - 68rem) / 2));
-      background: #151515;
-      color: white;
-    }
-
-    header {
+    .barra { border-bottom: 1px solid var(--borde); }
+    .barra .ancho {
       display: flex;
+      align-items: center;
       justify-content: space-between;
       flex-wrap: wrap;
       gap: .5rem 1rem;
+      padding-block: .6rem;
     }
+    .marca { font-weight: 900; letter-spacing: .08em; text-decoration: none; }
+    .social { display: flex; flex-wrap: wrap; gap: .25rem 1rem; }
+    .red { display: inline-flex; align-items: center; gap: .4rem; min-height: 44px; }
+    .red svg { width: 1.35rem; height: 1.35rem; flex: none; }
+    .red[aria-disabled="true"] { color: var(--suave); }
 
-    main { max-width: 70rem; margin: auto; padding: 2rem 1rem 3rem; }
-    h1 { margin: 0; font-size: clamp(2rem, 6vw, 4rem); }
-    h2, h3 { margin: 0; }
-    a { color: inherit; }
-
-    .buscador {
-      display: grid;
-      gap: .4rem;
-      max-width: 32rem;
-      margin: 1.5rem 0 .75rem;
+    .portada {
+      background: radial-gradient(ellipse at 82% 30%, #33244c, transparent 60%), #111014;
+      border-bottom: 1px solid var(--borde);
     }
-
-    .navegacion { display: flex; gap: .5rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
-    .navegacion button { background: white; color: #151515; }
-    .navegacion button[aria-pressed="true"] { background: #151515; color: white; }
-
-    #catalogo {
+    .portada .ancho {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(min(100%, 17rem), 1fr));
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      gap: 1.5rem 3rem;
+      padding-block: clamp(1.8rem, 5vw, 4rem);
+    }
+    .logo { width: min(100%, 27rem); margin-inline: auto; }
+    .logo img { width: 100%; height: auto; }
+    .logo-texto { font: clamp(2.75rem, 8vw, 6rem)/1 var(--titulos); }
+    h1, h2, h3, p { margin: 0; }
+    h1, h2 { font-family: var(--titulos); text-transform: uppercase; }
+    h1 { font-size: clamp(2.65rem, 7.5vw, 6rem); line-height: .98; }
+    h2 { font-size: clamp(1.6rem, 4vw, 2.6rem); line-height: 1.1; }
+    .acento { color: var(--lima); }
+    .aviso { margin-top: .8rem; color: var(--suave); }
+
+    .catalogo { padding-block: 1.5rem 3rem; }
+    .controles {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: end;
+      justify-content: space-between;
+      gap: .8rem 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .buscador { display: grid; gap: .35rem; width: min(100%, 31rem); }
+    .filtros { display: flex; flex-wrap: wrap; gap: .5rem; }
+    input, select, .boton {
+      min-height: 44px;
+      border: 1px solid var(--borde);
+      border-radius: .45rem;
+      padding: .55rem .8rem;
+      color: var(--texto);
+      background: var(--panel);
+    }
+    input, select { width: 100%; }
+    .boton { font-weight: 750; }
+    .boton[aria-pressed="true"], .accion {
+      color: #141116;
+      background: var(--lima);
+      border-color: var(--lima);
+    }
+    .resultados { min-height: 1.5em; margin: .35rem 0 .8rem; color: var(--suave); }
+    .rejilla {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
       gap: 1rem;
     }
-
-    article {
-      overflow: hidden;
-      background: white;
-      border: 1px solid #ddd;
-      border-radius: 1rem;
-    }
-
-    .foto {
-      display: grid;
-      place-items: center;
-      aspect-ratio: 4 / 5;
-      background: #ececec;
-    }
-
+    .ficha { overflow: hidden; background: var(--panel); border: 1px solid var(--borde); border-radius: .8rem; }
+    .foto { margin: 0; display: grid; place-items: center; aspect-ratio: 4 / 4.4; background: #302c37; }
     .foto img { width: 100%; height: 100%; object-fit: cover; }
-    article form { display: grid; gap: .75rem; padding: 1rem; }
-    article p { margin: 0; font-weight: 700; }
-
-    input, select, button {
-      min-height: 44px;
-      padding: .55rem .75rem;
-      border: 1px solid #777;
-      border-radius: .5rem;
-      font: inherit;
-    }
-
-    button { color: white; background: #151515; cursor: pointer; }
-    :focus-visible { outline: 3px solid #2164bd; outline-offset: 3px; }
-
-    #redes { display: flex; flex-wrap: wrap; gap: .75rem 1.5rem; }
-    .red { display: inline-flex; align-items: center; gap: .5rem; min-height: 44px; }
-    .red svg { width: 24px; height: 24px; }
+    .ficha form { display: grid; gap: .55rem; padding: 1rem; }
+    .precio { font-size: 1.1rem; font-weight: 850; }
+    .promocion { color: var(--violeta); font-size: .9rem; font-weight: 800; }
+    footer { padding-block: 1rem; border-top: 1px solid var(--borde); color: var(--suave); }
 
     dialog {
       width: min(30rem, calc(100% - 2rem));
-      border: 1px solid #888;
-      border-radius: 1rem;
-      padding: 1.25rem;
+      max-height: calc(100% - 2rem);
+      border: 1px solid var(--borde);
+      border-radius: .8rem;
+      padding: 1rem;
+      background: var(--panel);
+      color: var(--texto);
     }
-
-    dialog::backdrop { background: #000a; }
-    .cerrar { display: flex; justify-content: flex-end; margin-bottom: 1rem; }
-    dl div { display: flex; justify-content: space-between; gap: .75rem; padding: .5rem 0; }
+    dialog::backdrop { background: #000b; }
+    .cerrar { display: flex; justify-content: flex-end; margin-bottom: .75rem; }
+    #seleccion { margin-top: .5rem; }
+    dl div { display: flex; justify-content: space-between; gap: .75rem; padding: .35rem 0; }
     dd { margin: 0; white-space: nowrap; }
-    .total { border-top: 1px solid #ccc; font-weight: 700; }
+    .total { border-top: 1px solid var(--borde); font-weight: 850; }
+    #pagar { width: 100%; }
+
+    @media (max-width: 42rem) {
+      .portada .ancho { grid-template-columns: 1fr; }
+      .logo { width: min(70%, 17rem); margin-inline: 0; }
+    }
   </style>
 </head>
-<body>
-  <header>
-    <strong>Zapatos Urbanos</strong>
-    <span>Medellín, Colombia</span>
+<body id="inicio">
+  <a class="salto boton accion" href="#buscar">Ir al buscador</a>
+
+  <header class="barra">
+    <div class="ancho">
+      <a class="marca" href="#inicio">CCSxMDE</a>
+      <nav id="redes" class="social" aria-label="Redes sociales"></nav>
+    </div>
   </header>
 
   <main>
-    <h1>Zapatos urbanos</h1>
-    <p>Tienda de prueba · Pago simulado</p>
-
-    <div class="buscador" role="search">
-      <label for="buscar">Buscar por modelo o color</label>
-      <input id="buscar" type="search" placeholder="Ej. celeste, gris o negro">
-    </div>
-
-    <nav class="navegacion" aria-label="Secciones del catálogo">
-      <button id="ver-todos" type="button" aria-pressed="false">Todos los modelos</button>
-      <button id="ver-ofertas" type="button" aria-pressed="true">Ofertas</button>
-    </nav>
-
-    <section aria-labelledby="titulo-catalogo">
-      <h2 id="titulo-catalogo">Ofertas</h2>
-      <p id="resultados" role="status"></p>
-      <div id="catalogo"></div>
+    <section class="portada" aria-labelledby="titulo">
+      <div class="ancho">
+        <div class="logo" id="marca-logo">
+          <span class="logo-texto" id="logo-texto">CCSxMDE</span>
+        </div>
+        <div>
+          <h1 id="titulo">Tenis en <span class="acento">Medellín</span></h1>
+          <p class="aviso">Tienda de prueba · Pago simulado</p>
+        </div>
+      </div>
     </section>
 
-    <noscript>Activa JavaScript para usar el buscador y probar la compra.</noscript>
+    <section class="catalogo ancho" aria-labelledby="titulo-catalogo">
+      <div class="controles">
+        <div class="buscador" role="search">
+          <label for="buscar">Busca por modelo o color</label>
+          <input id="buscar" type="search" placeholder="Ej. celeste, gris o negro" autocomplete="off">
+        </div>
+        <div class="filtros" aria-label="Filtrar catálogo">
+          <button id="todos" class="boton" type="button" aria-pressed="true">Todos los modelos</button>
+          <button id="ofertas" class="boton" type="button" aria-pressed="false">Ofertas</button>
+        </div>
+      </div>
+
+      <h2 id="titulo-catalogo">Todos los modelos</h2>
+      <p id="resultados" class="resultados" role="status"></p>
+      <div id="productos" class="rejilla"></div>
+      <noscript>Activa JavaScript para usar el catálogo y probar la compra.</noscript>
+    </section>
   </main>
 
   <footer>
-    <nav id="redes" aria-label="Redes sociales"></nav>
+    <div class="ancho">CCSxMDE · Medellín, Colombia</div>
   </footer>
 
-  <dialog id="compra" aria-labelledby="titulo-compra">
+  <dialog id="pedido" aria-labelledby="titulo-pedido">
     <form method="dialog" class="cerrar">
-      <button type="submit">Cerrar</button>
+      <button id="cerrar" class="boton" type="submit">Cerrar</button>
     </form>
-
-    <h2 id="titulo-compra" aria-live="polite">Resumen del pedido</h2>
+    <h2 id="titulo-pedido" aria-live="polite">Resumen del pedido</h2>
     <p id="seleccion"></p>
     <dl>
       <div><dt>Precio del par</dt><dd id="subtotal"></dd></div>
       <div><dt>Envío de prueba en Medellín</dt><dd id="envio"></dd></div>
       <div class="total"><dt>Total</dt><dd id="total"></dd></div>
     </dl>
-    <button id="pagar" type="button">Simular pago</button>
+    <button id="pagar" class="boton accion" type="button">Simular pago</button>
   </dialog>
 
   <script>
+    // Pega aquí los enlaces completos de tu tienda.
+    const whatsapp = '';
+    const instagram = '';
+
     const productos = [
       { nombre: 'Blanco con azul celeste', foto: 'celeste.jpg.jpg', precio: 150000, oferta: true },
       { nombre: 'Blanco con gris y suela café', foto: 'gris.jpg.jpg', precio: 150000, oferta: true },
       { nombre: 'Blanco con detalle negro', foto: 'negro.jpg.jpg', precio: 150000, oferta: true }
     ];
-
     const tallas = [37, 38, 39, 40, 41, 42, 43];
     const costoEnvio = 10000;
-
-    // Pega los enlaces completos de tu tienda entre las comillas.
-    const whatsapp = '';
-    const instagram = '';
-
     const formato = new Intl.NumberFormat('es-CO');
     const pesos = valor => '$' + formato.format(valor) + ' COP';
     const normalizar = texto =>
       texto.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 
-    const catalogo = document.querySelector('#catalogo');
-    const buscar = document.querySelector('#buscar');
-    const verTodos = document.querySelector('#ver-todos');
-    const verOfertas = document.querySelector('#ver-ofertas');
-    const tituloCatalogo = document.querySelector('#titulo-catalogo');
-    const resultados = document.querySelector('#resultados');
-    const compra = document.querySelector('#compra');
-    const tituloCompra = document.querySelector('#titulo-compra');
-    const pagar = document.querySelector('#pagar');
-    let soloOfertas = true;
+    const buscar = document.getElementById('buscar');
+    const contenedor = document.getElementById('productos');
+    const todos = document.getElementById('todos');
+    const ofertas = document.getElementById('ofertas');
+    const pedido = document.getElementById('pedido');
+    const tituloPedido = document.getElementById('titulo-pedido');
+    const pagar = document.getElementById('pagar');
+    let soloOfertas = false;
+
+    const logo = new Image();
+    logo.alt = 'CCSxMDE';
+    logo.width = 768;
+    logo.height = 346;
+    logo.addEventListener('load', () => document.getElementById('logo-texto').replaceWith(logo));
+    logo.src = './img/logo-ccsxmde.png';
 
     function revisarPedido(producto, talla) {
-      tituloCompra.textContent = 'Resumen del pedido';
-      document.querySelector('#seleccion').textContent =
-        `${producto.nombre} · Talla ${talla} EUR`;
-      document.querySelector('#subtotal').textContent = pesos(producto.precio);
-      document.querySelector('#envio').textContent = pesos(costoEnvio);
-      document.querySelector('#total').textContent = pesos(producto.precio + costoEnvio);
+      tituloPedido.textContent = 'Resumen del pedido';
+      document.getElementById('seleccion').textContent = `${producto.nombre} · Talla ${talla} EUR`;
+      document.getElementById('subtotal').textContent = pesos(producto.precio);
+      document.getElementById('envio').textContent = pesos(costoEnvio);
+      document.getElementById('total').textContent = pesos(producto.precio + costoEnvio);
       pagar.hidden = false;
-      compra.showModal();
+      pedido.showModal();
     }
 
     function crearFicha(producto, indice) {
       const ficha = document.createElement('article');
+      ficha.className = 'ficha';
       ficha.innerHTML = `
-        <div class="foto"></div>
+        <figure class="foto"></figure>
         <form>
           <h3></h3>
-          <p></p>
+          <p class="promocion"></p>
+          <p class="precio"></p>
           <label for="talla-${indice}">Talla (EUR)</label>
           <select id="talla-${indice}" name="talla" required>
             <option value="">Elige tu talla</option>
             ${tallas.map(talla => `<option value="${talla}">${talla}</option>`).join('')}
           </select>
-          <button type="submit">Revisar pedido</button>
+          <button class="boton accion" type="submit">Ver total del pedido</button>
         </form>`;
 
       ficha.querySelector('h3').textContent = producto.nombre;
-      ficha.querySelector('p').textContent =
-        (producto.oferta ? 'Promoción · ' : '') + pesos(producto.precio);
+      const promocion = ficha.querySelector('.promocion');
+      promocion.textContent = 'En oferta';
+      promocion.hidden = !producto.oferta;
+      ficha.querySelector('.precio').textContent = pesos(producto.precio);
 
-      const imagen = document.createElement('img');
-      imagen.alt = producto.nombre;
+      const imagen = new Image();
+      imagen.alt = 'Tenis ' + producto.nombre.toLowerCase();
       imagen.addEventListener('error', () => imagen.replaceWith('Foto no disponible'));
-      imagen.src = './img/' + encodeURIComponent(producto.foto);
       ficha.querySelector('.foto').append(imagen);
+      imagen.src = './img/' + encodeURIComponent(producto.foto);
 
       const formulario = ficha.querySelector('form');
       formulario.addEventListener('submit', evento => {
@@ -216,7 +268,6 @@
         const talla = Number(formulario.elements.talla.value);
         if (tallas.includes(talla)) revisarPedido(producto, talla);
       });
-
       return ficha;
     }
 
@@ -230,58 +281,58 @@
           normalizar(producto.nombre).includes(consulta);
       });
 
-      tituloCatalogo.textContent = soloOfertas ? 'Ofertas' : 'Todos los modelos';
-      verOfertas.setAttribute('aria-pressed', String(soloOfertas));
-      verTodos.setAttribute('aria-pressed', String(!soloOfertas));
-
-      resultados.textContent = visibles.length === 0
-        ? 'No encontramos modelos en esta sección.'
-        : `${visibles.length} ${visibles.length === 1 ? 'modelo' : 'modelos'}`;
-
-      catalogo.replaceChildren(...visibles);
+      todos.setAttribute('aria-pressed', String(!soloOfertas));
+      ofertas.setAttribute('aria-pressed', String(soloOfertas));
+      document.getElementById('titulo-catalogo').textContent =
+        soloOfertas ? 'Ofertas' : 'Todos los modelos';
+      document.getElementById('resultados').textContent = visibles.length
+        ? `${visibles.length} ${visibles.length === 1 ? 'modelo' : 'modelos'}`
+        : 'No encontramos modelos. Prueba con otro color o nombre.';
+      contenedor.replaceChildren(...visibles);
     }
 
     buscar.addEventListener('input', mostrarCatalogo);
-    verTodos.addEventListener('click', () => {
+    todos.addEventListener('click', () => {
       soloOfertas = false;
       mostrarCatalogo();
     });
-    verOfertas.addEventListener('click', () => {
+    ofertas.addEventListener('click', () => {
       soloOfertas = true;
       mostrarCatalogo();
     });
-
     pagar.addEventListener('click', () => {
-      tituloCompra.textContent = 'Pedido de prueba confirmado';
+      tituloPedido.textContent = 'Pedido de prueba confirmado';
+      document.getElementById('cerrar').focus();
       pagar.hidden = true;
-      compra.querySelector('.cerrar button').focus();
     });
 
     const redes = [
       {
         nombre: 'WhatsApp',
-        enlace: whatsapp,
-        icono: '<path d="M20 11.7a8 8 0 0 1-11.8 7L4 20l1.2-4.1A8 8 0 1 1 20 11.7Z"/><path d="m9 9 1 2-1 1c.7 1.4 1.7 2.4 3.1 3.1l1-1 2 1c.5.3.2 1.5-.7 1.6-3.3.4-7.5-3.8-7.1-7.1.1-.9 1.3-1.2 1.7-.6Z"/>'
+        url: whatsapp,
+        dibujo: '<path d="M20 11.7a8 8 0 0 1-11.8 7L4 20l1.2-4.1A8 8 0 1 1 20 11.7Z"/><path d="m9 9 1 2-1 1c.7 1.4 1.7 2.4 3.1 3.1l1-1 2 1c.5.3.2 1.5-.7 1.6-3.3.4-7.5-3.8-7.1-7.1.1-.9 1.3-1.2 1.7-.6Z"/>'
       },
       {
         nombre: 'Instagram',
-        enlace: instagram,
-        icono: '<rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17.5 6.5h.01"/>'
+        url: instagram,
+        dibujo: '<rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17.5 6.5h.01"/>'
       }
     ];
 
-    for (const { nombre, enlace, icono } of redes) {
-      const elemento = document.createElement(enlace ? 'a' : 'span');
-      elemento.className = 'red';
-      elemento.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+    for (const { nombre, url, dibujo } of redes) {
+      const red = document.createElement(url ? 'a' : 'span');
+      red.className = 'red';
+      red.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
         stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"
-        aria-hidden="true">${icono}</svg>`;
-      elemento.append(enlace ? nombre : nombre + ' pendiente');
-      if (enlace) elemento.href = enlace;
-      document.querySelector('#redes').append(elemento);
+        aria-hidden="true">${dibujo}</svg>`;
+      red.append(url ? nombre : `${nombre} pendiente`);
+      if (url) red.href = url;
+      else red.setAttribute('aria-disabled', 'true');
+      document.getElementById('redes').append(red);
     }
 
     mostrarCatalogo();
   </script>
 </body>
 </html>
+ 
