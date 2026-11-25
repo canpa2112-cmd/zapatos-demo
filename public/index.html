@@ -3,68 +3,103 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="CCSxMDE. Catálogo de tenis y tienda de prueba en Medellín.">
-  <title>CCSxMDE | Tenis en Medellín</title>
+  <meta name="description" content="CCSxMDE, catálogo de tenis y tienda de prueba en Medellín.">
+  <title>CCSxMDE | La calle marca el paso</title>
   <style>
     :root {
       color-scheme: dark;
-      --fondo: #111014;
-      --panel: #1c1a21;
-      --texto: #f8f7fa;
-      --suave: #d0cbd7;
-      --lima: #dbfb62;
-      --violeta: #c3a5ff;
-      --borde: #786d86;
-      --titulos: "Impact", "Arial Narrow", system-ui, sans-serif;
+      --fondo: #0b0d10;
+      --panel: #191e25;
+      --texto: #f7f9fc;
+      --suave: #c5ced8;
+      --celeste: #92dcff;
+      --borde: #687785;
+      --titulos: Impact, "Arial Narrow", system-ui, sans-serif;
     }
 
     * { box-sizing: border-box; }
-    html { scroll-padding-top: 1rem; }
-    body { margin: 0; background: var(--fondo); color: var(--texto); font: 1rem/1.5 system-ui, sans-serif; }
+    body {
+      margin: 0;
+      background: var(--fondo);
+      color: var(--texto);
+      font: 1rem/1.5 system-ui, sans-serif;
+    }
+    h1, h2, h3, p, figure { margin: 0; }
     a { color: inherit; }
-    button, input, select { font: inherit; }
-    button { cursor: pointer; }
     img { display: block; max-width: 100%; }
+    input, select, button { font: inherit; }
+    button { cursor: pointer; }
     [hidden] { display: none !important; }
-    :focus-visible { outline: 3px solid var(--lima); outline-offset: 4px; }
+    :focus-visible { outline: 3px solid var(--celeste); outline-offset: 4px; }
     .ancho { width: min(100% - 2rem, 73rem); margin-inline: auto; }
-    .salto { position: absolute; top: 1rem; left: 1rem; z-index: 2; transform: translateY(-200%); }
+
+    .salto {
+      position: absolute;
+      top: 1rem;
+      left: 1rem;
+      z-index: 2;
+      transform: translateY(-200%);
+    }
     .salto:focus { transform: none; }
 
-    .barra { border-bottom: 1px solid var(--borde); }
-    .barra .ancho {
+    header { border-bottom: 1px solid var(--borde); }
+    header .ancho {
       display: flex;
+      flex-wrap: wrap;
       align-items: center;
       justify-content: space-between;
-      flex-wrap: wrap;
-      gap: .5rem 1rem;
-      padding-block: .6rem;
+      gap: .25rem 1rem;
+      padding-block: .5rem;
     }
-    .marca { font-weight: 900; letter-spacing: .08em; text-decoration: none; }
+    .marca { font-weight: 900; letter-spacing: .1em; text-decoration: none; }
     .social { display: flex; flex-wrap: wrap; gap: .25rem 1rem; }
     .red { display: inline-flex; align-items: center; gap: .4rem; min-height: 44px; }
-    .red svg { width: 1.35rem; height: 1.35rem; flex: none; }
-    .red[aria-disabled="true"] { color: var(--suave); }
+    .red svg { width: 1.3rem; height: 1.3rem; flex: none; }
+    .red-pendiente { color: var(--suave); }
 
     .portada {
-      background: radial-gradient(ellipse at 82% 30%, #33244c, transparent 60%), #111014;
+      position: relative;
+      isolation: isolate;
+      overflow: hidden;
+      background: linear-gradient(115deg, #0b0d10, #1d2b37);
       border-bottom: 1px solid var(--borde);
+    }
+    .portada::before {
+      content: "";
+      position: absolute;
+      z-index: -1;
+      inset: -35%;
+      background: url("./img/logo.ccsxmde.png") repeat center / clamp(12rem, 28vw, 25rem) auto;
+      transform: rotate(-13deg);
+      opacity: .15;
+      pointer-events: none;
     }
     .portada .ancho {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
       align-items: center;
-      gap: 1.5rem 3rem;
-      padding-block: clamp(1.8rem, 5vw, 4rem);
+      gap: 1rem 3rem;
+      padding-block: clamp(1.75rem, 5vw, 4.5rem);
     }
-    .logo { width: min(100%, 27rem); margin-inline: auto; }
+    .logo {
+      width: min(100%, 27rem);
+      padding: clamp(.75rem, 2vw, 1.5rem);
+      background: var(--fondo);
+      border: 1px solid var(--borde);
+    }
     .logo img { width: 100%; height: auto; }
-    .logo-texto { font: clamp(2.75rem, 8vw, 6rem)/1 var(--titulos); }
-    h1, h2, h3, p { margin: 0; }
+    .logo-texto { font: clamp(2rem, 7vw, 5rem)/1 var(--titulos); }
+
     h1, h2 { font-family: var(--titulos); text-transform: uppercase; }
-    h1 { font-size: clamp(2.65rem, 7.5vw, 6rem); line-height: .98; }
+    h1 {
+      max-width: 13ch;
+      font-size: clamp(2.65rem, 7.8vw, 6.75rem);
+      line-height: .98;
+      letter-spacing: -.025em;
+      text-shadow: 0 2px 12px #000;
+    }
     h2 { font-size: clamp(1.6rem, 4vw, 2.6rem); line-height: 1.1; }
-    .acento { color: var(--lima); }
+    .acento, .promocion { color: var(--celeste); }
     .aviso { margin-top: .8rem; color: var(--suave); }
 
     .catalogo { padding-block: 1.5rem 3rem; }
@@ -80,39 +115,49 @@
     .filtros { display: flex; flex-wrap: wrap; gap: .5rem; }
     input, select, .boton {
       min-height: 44px;
+      padding: .55rem .8rem;
       border: 1px solid var(--borde);
       border-radius: .45rem;
-      padding: .55rem .8rem;
       color: var(--texto);
       background: var(--panel);
     }
     input, select { width: 100%; }
     .boton { font-weight: 750; }
     .boton[aria-pressed="true"], .accion {
-      color: #141116;
-      background: var(--lima);
-      border-color: var(--lima);
+      color: var(--fondo);
+      background: var(--celeste);
+      border-color: var(--celeste);
     }
     .resultados { min-height: 1.5em; margin: .35rem 0 .8rem; color: var(--suave); }
     .rejilla {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 17rem), 1fr));
       gap: 1rem;
     }
-    .ficha { overflow: hidden; background: var(--panel); border: 1px solid var(--borde); border-radius: .8rem; }
-    .foto { margin: 0; display: grid; place-items: center; aspect-ratio: 4 / 4.4; background: #302c37; }
+    .ficha {
+      overflow: hidden;
+      background: var(--panel);
+      border: 1px solid var(--borde);
+      border-radius: .8rem;
+    }
+    .foto {
+      display: grid;
+      place-items: center;
+      aspect-ratio: 4 / 4.4;
+      background: #272e36;
+    }
     .foto img { width: 100%; height: 100%; object-fit: cover; }
     .ficha form { display: grid; gap: .55rem; padding: 1rem; }
-    .precio { font-size: 1.1rem; font-weight: 850; }
-    .promocion { color: var(--violeta); font-size: .9rem; font-weight: 800; }
+    .precio { font-size: 1.15rem; font-weight: 850; }
+    .promocion { font-size: .9rem; font-weight: 800; }
     footer { padding-block: 1rem; border-top: 1px solid var(--borde); color: var(--suave); }
 
     dialog {
       width: min(30rem, calc(100% - 2rem));
       max-height: calc(100% - 2rem);
+      padding: 1rem;
       border: 1px solid var(--borde);
       border-radius: .8rem;
-      padding: 1rem;
       background: var(--panel);
       color: var(--texto);
     }
@@ -126,14 +171,16 @@
 
     @media (max-width: 42rem) {
       .portada .ancho { grid-template-columns: 1fr; }
-      .logo { width: min(70%, 17rem); margin-inline: 0; }
+      .logo { width: min(70%, 15rem); }
+      h1 { max-width: none; }
     }
   </style>
 </head>
+
 <body id="inicio">
   <a class="salto boton accion" href="#buscar">Ir al buscador</a>
 
-  <header class="barra">
+  <header>
     <div class="ancho">
       <a class="marca" href="#inicio">CCSxMDE</a>
       <nav id="redes" class="social" aria-label="Redes sociales"></nav>
@@ -143,12 +190,13 @@
   <main>
     <section class="portada" aria-labelledby="titulo">
       <div class="ancho">
-        <div class="logo" id="marca-logo">
-          <span class="logo-texto" id="logo-texto">CCSxMDE</span>
+        <div class="logo">
+          <img id="logo" src="./img/logo.ccsxmde.png" width="766" height="344" alt="CCSxMDE">
+          <span id="logo-texto" class="logo-texto" hidden>CCSxMDE</span>
         </div>
         <div>
-          <h1 id="titulo">Tenis en <span class="acento">Medellín</span></h1>
-          <p class="aviso">Tienda de prueba · Pago simulado</p>
+          <h1 id="titulo">La calle <span class="acento">marca el paso.</span></h1>
+          <p class="aviso">Medellín, Colombia · Tienda de prueba · Pago simulado</p>
         </div>
       </div>
     </section>
@@ -159,7 +207,7 @@
           <label for="buscar">Busca por modelo o color</label>
           <input id="buscar" type="search" placeholder="Ej. celeste, gris o negro" autocomplete="off">
         </div>
-        <div class="filtros" aria-label="Filtrar catálogo">
+        <div class="filtros" role="group" aria-label="Filtrar catálogo">
           <button id="todos" class="boton" type="button" aria-pressed="true">Todos los modelos</button>
           <button id="ofertas" class="boton" type="button" aria-pressed="false">Ofertas</button>
         </div>
@@ -191,7 +239,7 @@
   </dialog>
 
   <script>
-    // Pega aquí los enlaces completos de tu tienda.
+    // Pega aquí los enlaces completos de tu tienda cuando los tengas.
     const whatsapp = '';
     const instagram = '';
 
@@ -200,6 +248,7 @@
       { nombre: 'Blanco con gris y suela café', foto: 'gris.jpg.jpg', precio: 150000, oferta: true },
       { nombre: 'Blanco con detalle negro', foto: 'negro.jpg.jpg', precio: 150000, oferta: true }
     ];
+
     const tallas = [37, 38, 39, 40, 41, 42, 43];
     const costoEnvio = 10000;
     const formato = new Intl.NumberFormat('es-CO');
@@ -216,16 +265,18 @@
     const pagar = document.getElementById('pagar');
     let soloOfertas = false;
 
-    const logo = new Image();
-    logo.alt = 'CCSxMDE';
-    logo.width = 768;
-    logo.height = 346;
-    logo.addEventListener('load', () => document.getElementById('logo-texto').replaceWith(logo));
-    logo.src = './img/logo-ccsxmde.png';
+    const logo = document.getElementById('logo');
+    function mostrarMarcaEnTexto() {
+      logo.hidden = true;
+      document.getElementById('logo-texto').hidden = false;
+    }
+    logo.addEventListener('error', mostrarMarcaEnTexto);
+    if (logo.complete && !logo.naturalWidth) mostrarMarcaEnTexto();
 
     function revisarPedido(producto, talla) {
       tituloPedido.textContent = 'Resumen del pedido';
-      document.getElementById('seleccion').textContent = `${producto.nombre} · Talla ${talla} EUR`;
+      document.getElementById('seleccion').textContent =
+        `${producto.nombre} · Talla ${talla} EUR`;
       document.getElementById('subtotal').textContent = pesos(producto.precio);
       document.getElementById('envio').textContent = pesos(costoEnvio);
       document.getElementById('total').textContent = pesos(producto.precio + costoEnvio);
@@ -251,16 +302,17 @@
         </form>`;
 
       ficha.querySelector('h3').textContent = producto.nombre;
+      ficha.querySelector('.precio').textContent = pesos(producto.precio);
+
       const promocion = ficha.querySelector('.promocion');
       promocion.textContent = 'En oferta';
       promocion.hidden = !producto.oferta;
-      ficha.querySelector('.precio').textContent = pesos(producto.precio);
 
-      const imagen = new Image();
-      imagen.alt = 'Tenis ' + producto.nombre.toLowerCase();
-      imagen.addEventListener('error', () => imagen.replaceWith('Foto no disponible'));
-      ficha.querySelector('.foto').append(imagen);
-      imagen.src = './img/' + encodeURIComponent(producto.foto);
+      const foto = new Image();
+      foto.alt = 'Tenis ' + producto.nombre.toLowerCase();
+      foto.addEventListener('error', () => foto.replaceWith('Foto no disponible'));
+      foto.src = './img/' + encodeURIComponent(producto.foto);
+      ficha.querySelector('.foto').append(foto);
 
       const formulario = ficha.querySelector('form');
       formulario.addEventListener('submit', evento => {
@@ -268,6 +320,7 @@
         const talla = Number(formulario.elements.talla.value);
         if (tallas.includes(talla)) revisarPedido(producto, talla);
       });
+
       return ficha;
     }
 
@@ -288,6 +341,7 @@
       document.getElementById('resultados').textContent = visibles.length
         ? `${visibles.length} ${visibles.length === 1 ? 'modelo' : 'modelos'}`
         : 'No encontramos modelos. Prueba con otro color o nombre.';
+
       contenedor.replaceChildren(...visibles);
     }
 
@@ -321,13 +375,12 @@
 
     for (const { nombre, url, dibujo } of redes) {
       const red = document.createElement(url ? 'a' : 'span');
-      red.className = 'red';
+      red.className = url ? 'red' : 'red red-pendiente';
       red.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
         stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"
         aria-hidden="true">${dibujo}</svg>`;
       red.append(url ? nombre : `${nombre} pendiente`);
       if (url) red.href = url;
-      else red.setAttribute('aria-disabled', 'true');
       document.getElementById('redes').append(red);
     }
 
@@ -335,4 +388,3 @@
   </script>
 </body>
 </html>
- 
