@@ -6,33 +6,94 @@
   <title>Zapatos Urbanos · Medellín</title>
   <style>
     * { box-sizing: border-box; }
-    body { margin: 0; font: 1rem system-ui, sans-serif; color: #151515; background: #f5f5f5; }
-    header, footer { padding: 1rem; color: white; background: #151515; }
-    header { display: flex; justify-content: space-between; flex-wrap: wrap; gap: .5rem; }
-    main { max-width: 70rem; margin: auto; padding: 1.5rem 1rem; }
-    h1 { font-size: clamp(2rem, 6vw, 4rem); margin: 0; }
-    h2 { margin: 0; }
+
+    body {
+      margin: 0;
+      font: 1rem system-ui, sans-serif;
+      color: #151515;
+      background: #f5f5f5;
+    }
+
+    header, footer {
+      padding: 1rem max(1rem, calc((100% - 68rem) / 2));
+      background: #151515;
+      color: white;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: .5rem 1rem;
+    }
+
+    main { max-width: 70rem; margin: auto; padding: 2rem 1rem 3rem; }
+    h1 { margin: 0; font-size: clamp(2rem, 6vw, 4rem); }
+    h2, h3 { margin: 0; }
+    a { color: inherit; }
+
+    .buscador {
+      display: grid;
+      gap: .4rem;
+      max-width: 32rem;
+      margin: 1.5rem 0 .75rem;
+    }
+
+    .navegacion { display: flex; gap: .5rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
+    .navegacion button { background: white; color: #151515; }
+    .navegacion button[aria-pressed="true"] { background: #151515; color: white; }
+
     #catalogo {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 17rem), 1fr));
       gap: 1rem;
     }
-    article { background: white; border: 1px solid #ccc; border-radius: 1rem; overflow: hidden; }
-    .foto { display: grid; place-items: center; aspect-ratio: 4 / 5; background: #e8e8e8; }
+
+    article {
+      overflow: hidden;
+      background: white;
+      border: 1px solid #ddd;
+      border-radius: 1rem;
+    }
+
+    .foto {
+      display: grid;
+      place-items: center;
+      aspect-ratio: 4 / 5;
+      background: #ececec;
+    }
+
     .foto img { width: 100%; height: 100%; object-fit: cover; }
     article form { display: grid; gap: .75rem; padding: 1rem; }
     article p { margin: 0; font-weight: 700; }
-    select, button { min-height: 44px; padding: .5rem .75rem; border: 1px solid #777; border-radius: .5rem; font: inherit; }
+
+    input, select, button {
+      min-height: 44px;
+      padding: .55rem .75rem;
+      border: 1px solid #777;
+      border-radius: .5rem;
+      font: inherit;
+    }
+
     button { color: white; background: #151515; cursor: pointer; }
     :focus-visible { outline: 3px solid #2164bd; outline-offset: 3px; }
-    dialog { width: min(30rem, calc(100% - 2rem)); border: 1px solid #888; border-radius: 1rem; padding: 1.25rem; }
+
+    #redes { display: flex; flex-wrap: wrap; gap: .75rem 1.5rem; }
+    .red { display: inline-flex; align-items: center; gap: .5rem; min-height: 44px; }
+    .red svg { width: 24px; height: 24px; }
+
+    dialog {
+      width: min(30rem, calc(100% - 2rem));
+      border: 1px solid #888;
+      border-radius: 1rem;
+      padding: 1.25rem;
+    }
+
     dialog::backdrop { background: #000a; }
-    .cerrar { text-align: right; margin-bottom: .75rem; }
+    .cerrar { display: flex; justify-content: flex-end; margin-bottom: 1rem; }
     dl div { display: flex; justify-content: space-between; gap: .75rem; padding: .5rem 0; }
     dd { margin: 0; white-space: nowrap; }
     .total { border-top: 1px solid #ccc; font-weight: 700; }
-    nav { display: flex; flex-wrap: wrap; gap: 1rem; }
-    a { color: inherit; }
   </style>
 </head>
 <body>
@@ -44,18 +105,39 @@
   <main>
     <h1>Zapatos urbanos</h1>
     <p>Tienda de prueba · Pago simulado</p>
-    <section id="catalogo" aria-label="Catálogo"></section>
-    <noscript>Activa JavaScript para ver el catálogo y probar la compra.</noscript>
+
+    <div class="buscador" role="search">
+      <label for="buscar">Buscar por modelo o color</label>
+      <input id="buscar" type="search" placeholder="Ej. celeste, gris o negro">
+    </div>
+
+    <nav class="navegacion" aria-label="Secciones del catálogo">
+      <button id="ver-todos" type="button" aria-pressed="false">Todos los modelos</button>
+      <button id="ver-ofertas" type="button" aria-pressed="true">Ofertas</button>
+    </nav>
+
+    <section aria-labelledby="titulo-catalogo">
+      <h2 id="titulo-catalogo">Ofertas</h2>
+      <p id="resultados" role="status"></p>
+      <div id="catalogo"></div>
+    </section>
+
+    <noscript>Activa JavaScript para usar el buscador y probar la compra.</noscript>
   </main>
 
-  <footer><nav id="redes" aria-label="Redes sociales"></nav></footer>
+  <footer>
+    <nav id="redes" aria-label="Redes sociales"></nav>
+  </footer>
 
   <dialog id="compra" aria-labelledby="titulo-compra">
-    <form method="dialog" class="cerrar"><button>Cerrar</button></form>
-    <h2 id="titulo-compra">Resumen del pedido</h2>
+    <form method="dialog" class="cerrar">
+      <button type="submit">Cerrar</button>
+    </form>
+
+    <h2 id="titulo-compra" aria-live="polite">Resumen del pedido</h2>
     <p id="seleccion"></p>
     <dl>
-      <div><dt>Par en promoción</dt><dd id="subtotal"></dd></div>
+      <div><dt>Precio del par</dt><dd id="subtotal"></dd></div>
       <div><dt>Envío de prueba en Medellín</dt><dd id="envio"></dd></div>
       <div class="total"><dt>Total</dt><dd id="total"></dd></div>
     </dl>
@@ -64,160 +146,51 @@
 
   <script>
     const productos = [
-      { nombre: 'Blanco con azul celeste', foto: 'celeste.jpg', precio: 150000 },
-      { nombre: 'Blanco con gris y suela café', foto: 'gris.jpg', precio: 150000 },
-      { nombre: 'Blanco con detalle negro', foto: 'negro.jpg', precio: 150000 }
+      { nombre: 'Blanco con azul celeste', foto: 'celeste.jpg.jpg', precio: 150000, oferta: true },
+      { nombre: 'Blanco con gris y suela café', foto: 'gris.jpg.jpg', precio: 150000, oferta: true },
+      { nombre: 'Blanco con detalle negro', foto: 'negro.jpg.jpg', precio: 150000, oferta: true }
     ];
+
     const tallas = [37, 38, 39, 40, 41, 42, 43];
-    const envio = 10000;
+    const costoEnvio = 10000;
 
-    // Pega tus enlaces de WhatsApp e Instagram entre las comillas.
-    const redes = { WhatsApp: '', Instagram: '' };
-<style>
-  .buscador { display: grid; gap: .4rem; max-width: 32rem; margin: 1rem 0; }
-  .buscador input {
-    min-height: 44px;
-    padding: .6rem;
-    border: 1px solid #777;
-    border-radius: .5rem;
-    font: inherit;
-  }
-  .red-social { display: inline-flex; align-items: center; gap: .5rem; min-height: 44px; }
-  .red-social svg { width: 24px; height: 24px; }
-</style>
-<script>
-  const productos = [
-    { nombre: 'Blanco con azul celeste', foto: 'celeste.jpg.jpg', precio: 150000, oferta: true },
-    { nombre: 'Blanco con gris y suela café', foto: 'gris.jpg.jpg', precio: 150000, oferta: true },
-    { nombre: 'Blanco con detalle negro', foto: 'negro.jpg.jpg', precio: 150000, oferta: true }
-  ];
-  const tallas = [37, 38, 39, 40, 41, 42, 43];
-  const envio = 10000;
+    // Pega los enlaces completos de tu tienda entre las comillas.
+    const whatsapp = '';
+    const instagram = '';
 
-  // Pega los enlaces de tu tienda entre las comillas.
-  const whatsapp = '';
-  const instagram = '';
+    const formato = new Intl.NumberFormat('es-CO');
+    const pesos = valor => '$' + formato.format(valor) + ' COP';
+    const normalizar = texto =>
+      texto.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 
-  const formato = new Intl.NumberFormat('es-CO');
-  const pesos = valor => '$' + formato.format(valor) + ' COP';
-  const normalizar = texto =>
-    texto.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    const catalogo = document.querySelector('#catalogo');
+    const buscar = document.querySelector('#buscar');
+    const verTodos = document.querySelector('#ver-todos');
+    const verOfertas = document.querySelector('#ver-ofertas');
+    const tituloCatalogo = document.querySelector('#titulo-catalogo');
+    const resultados = document.querySelector('#resultados');
+    const compra = document.querySelector('#compra');
+    const tituloCompra = document.querySelector('#titulo-compra');
+    const pagar = document.querySelector('#pagar');
+    let soloOfertas = true;
 
-  const catalogo = document.querySelector('#catalogo');
-  catalogo.insertAdjacentHTML('beforebegin', `
-    <div class="buscador">
-      <label for="buscar">Buscar zapatos</label>
-      <input id="buscar" type="search" placeholder="Ej. celeste o blanco">
-    </div>
-    <p><a href="#ofertas">Ver ofertas</a></p>
-    <h2 id="ofertas">Ofertas</h2>
-    <p id="resultados" role="status"></p>`);
-
-  const compra = document.querySelector('#compra');
-  const titulo = document.querySelector('#titulo-compra');
-  const pagar = document.querySelector('#pagar');
-
-  const fichas = productos.map((producto, indice) => {
-    const ficha = document.createElement('article');
-    ficha.innerHTML = `
-      <div class="foto"></div>
-      <form>
-        <h2></h2>
-        <p></p>
-        <label for="talla-${indice}">Talla (EUR)</label>
-        <select id="talla-${indice}" name="talla" required>
-          <option value="">Elige tu talla</option>
-          ${tallas.map(talla => `<option value="${talla}">${talla}</option>`).join('')}
-        </select>
-        <button type="submit">Revisar pedido</button>
-      </form>`;
-
-    ficha.querySelector('h2').textContent = producto.nombre;
-    ficha.querySelector('p').textContent =
-      (producto.oferta ? 'Promoción · ' : '') + pesos(producto.precio);
-
-    const foto = document.createElement('img');
-    foto.alt = producto.nombre;
-    foto.addEventListener('error', () => foto.replaceWith('Foto no disponible'));
-    ficha.querySelector('.foto').append(foto);
-    foto.src = './img/' + encodeURIComponent(producto.foto);
-
-    const formulario = ficha.querySelector('form');
-    formulario.addEventListener('submit', evento => {
-      evento.preventDefault();
-      const talla = Number(formulario.elements.talla.value);
-      if (!tallas.includes(talla)) return;
-
-      titulo.textContent = 'Resumen del pedido';
+    function revisarPedido(producto, talla) {
+      tituloCompra.textContent = 'Resumen del pedido';
       document.querySelector('#seleccion').textContent =
         `${producto.nombre} · Talla ${talla} EUR`;
       document.querySelector('#subtotal').textContent = pesos(producto.precio);
-      document.querySelector('#envio').textContent = pesos(envio);
-      document.querySelector('#total').textContent = pesos(producto.precio + envio);
+      document.querySelector('#envio').textContent = pesos(costoEnvio);
+      document.querySelector('#total').textContent = pesos(producto.precio + costoEnvio);
       pagar.hidden = false;
       compra.showModal();
-    });
+    }
 
-    return { producto, ficha };
-  });
-
-  const buscar = document.querySelector('#buscar');
-  const resultados = document.querySelector('#resultados');
-  const ofertas = document.querySelector('#ofertas');
-
-  function mostrarProductos() {
-    const consulta = normalizar(buscar.value.trim());
-    const visibles = fichas.filter(({ producto }) =>
-      consulta ? normalizar(producto.nombre).includes(consulta) : producto.oferta
-    );
-
-    ofertas.textContent = consulta ? 'Resultados de búsqueda' : 'Ofertas';
-    resultados.textContent = visibles.length ? '' : 'No encontramos zapatos con esa búsqueda.';
-    catalogo.replaceChildren(...visibles.map(({ ficha }) => ficha));
-  }
-
-  buscar.addEventListener('input', mostrarProductos);
-  document.querySelector('a[href="#ofertas"]').addEventListener('click', () => {
-    buscar.value = '';
-    mostrarProductos();
-  });
-  mostrarProductos();
-
-  pagar.addEventListener('click', () => {
-    titulo.textContent = 'Pedido de prueba confirmado';
-    pagar.hidden = true;
-    compra.querySelector('.cerrar button').focus();
-  });
-
-  const redes = [
-    ['WhatsApp', whatsapp, '<path d="M20 11.7a8 8 0 0 1-11.8 7L4 20l1.2-4.1A8 8 0 1 1 20 11.7Z"/><path d="m9 9 1 2-1 1c.7 1.4 1.7 2.4 3.1 3.1l1-1 2 1c.5.3.2 1.5-.7 1.6-3.3.4-7.5-3.8-7.1-7.1.1-.9 1.3-1.2 1.7-.6Z"/>'],
-    ['Instagram', instagram, '<rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17.5 6.5h.01"/>']
-  ];
-
-  for (const [nombre, enlace, icono] of redes) {
-    const elemento = document.createElement(enlace ? 'a' : 'span');
-    elemento.className = 'red-social';
-    elemento.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"
-      aria-hidden="true">${icono}</svg>`;
-    elemento.append(enlace ? nombre : nombre + ' pendiente');
-    if (enlace) elemento.href = enlace;
-    document.querySelector('#redes').append(elemento);
-  }
-</script>
-    const formato = new Intl.NumberFormat('es-CO');
-    const pesos = valor => '$' + formato.format(valor) + ' COP';
-    const catalogo = document.querySelector('#catalogo');
-    const compra = document.querySelector('#compra');
-    const titulo = document.querySelector('#titulo-compra');
-    const pagar = document.querySelector('#pagar');
-
-    productos.forEach((producto, indice) => {
+    function crearFicha(producto, indice) {
       const ficha = document.createElement('article');
       ficha.innerHTML = `
         <div class="foto"></div>
         <form>
-          <h2></h2>
+          <h3></h3>
           <p></p>
           <label for="talla-${indice}">Talla (EUR)</label>
           <select id="talla-${indice}" name="talla" required>
@@ -227,46 +200,88 @@
           <button type="submit">Revisar pedido</button>
         </form>`;
 
-      ficha.querySelector('h2').textContent = producto.nombre;
-      ficha.querySelector('p').textContent = 'Promoción · ' + pesos(producto.precio);
+      ficha.querySelector('h3').textContent = producto.nombre;
+      ficha.querySelector('p').textContent =
+        (producto.oferta ? 'Promoción · ' : '') + pesos(producto.precio);
 
-      const foto = document.createElement('img');
-      foto.alt = producto.nombre;
-      foto.addEventListener('error', () => foto.replaceWith('Foto por agregar'));
-      ficha.querySelector('.foto').append(foto);
-      foto.src = 'img/' + producto.foto;
+      const imagen = document.createElement('img');
+      imagen.alt = producto.nombre;
+      imagen.addEventListener('error', () => imagen.replaceWith('Foto no disponible'));
+      imagen.src = './img/' + encodeURIComponent(producto.foto);
+      ficha.querySelector('.foto').append(imagen);
 
       const formulario = ficha.querySelector('form');
       formulario.addEventListener('submit', evento => {
         evento.preventDefault();
         const talla = Number(formulario.elements.talla.value);
-        if (!tallas.includes(talla)) return;
-
-        titulo.textContent = 'Resumen del pedido';
-        document.querySelector('#seleccion').textContent =
-          `${producto.nombre} · Talla ${talla} EUR`;
-        document.querySelector('#subtotal').textContent = pesos(producto.precio);
-        document.querySelector('#envio').textContent = pesos(envio);
-        document.querySelector('#total').textContent = pesos(producto.precio + envio);
-        pagar.hidden = false;
-        compra.showModal();
+        if (tallas.includes(talla)) revisarPedido(producto, talla);
       });
 
-      catalogo.append(ficha);
+      return ficha;
+    }
+
+    const fichas = productos.map(crearFicha);
+
+    function mostrarCatalogo() {
+      const consulta = normalizar(buscar.value.trim());
+      const visibles = fichas.filter((ficha, indice) => {
+        const producto = productos[indice];
+        return (!soloOfertas || producto.oferta) &&
+          normalizar(producto.nombre).includes(consulta);
+      });
+
+      tituloCatalogo.textContent = soloOfertas ? 'Ofertas' : 'Todos los modelos';
+      verOfertas.setAttribute('aria-pressed', String(soloOfertas));
+      verTodos.setAttribute('aria-pressed', String(!soloOfertas));
+
+      resultados.textContent = visibles.length === 0
+        ? 'No encontramos modelos en esta sección.'
+        : `${visibles.length} ${visibles.length === 1 ? 'modelo' : 'modelos'}`;
+
+      catalogo.replaceChildren(...visibles);
+    }
+
+    buscar.addEventListener('input', mostrarCatalogo);
+    verTodos.addEventListener('click', () => {
+      soloOfertas = false;
+      mostrarCatalogo();
+    });
+    verOfertas.addEventListener('click', () => {
+      soloOfertas = true;
+      mostrarCatalogo();
     });
 
     pagar.addEventListener('click', () => {
-      titulo.textContent = 'Pedido de prueba confirmado';
+      tituloCompra.textContent = 'Pedido de prueba confirmado';
       pagar.hidden = true;
       compra.querySelector('.cerrar button').focus();
     });
 
-    for (const [nombre, enlace] of Object.entries(redes)) {
+    const redes = [
+      {
+        nombre: 'WhatsApp',
+        enlace: whatsapp,
+        icono: '<path d="M20 11.7a8 8 0 0 1-11.8 7L4 20l1.2-4.1A8 8 0 1 1 20 11.7Z"/><path d="m9 9 1 2-1 1c.7 1.4 1.7 2.4 3.1 3.1l1-1 2 1c.5.3.2 1.5-.7 1.6-3.3.4-7.5-3.8-7.1-7.1.1-.9 1.3-1.2 1.7-.6Z"/>'
+      },
+      {
+        nombre: 'Instagram',
+        enlace: instagram,
+        icono: '<rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17.5 6.5h.01"/>'
+      }
+    ];
+
+    for (const { nombre, enlace, icono } of redes) {
       const elemento = document.createElement(enlace ? 'a' : 'span');
-      elemento.textContent = enlace ? nombre : nombre + ' pendiente';
+      elemento.className = 'red';
+      elemento.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+        stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"
+        aria-hidden="true">${icono}</svg>`;
+      elemento.append(enlace ? nombre : nombre + ' pendiente');
       if (enlace) elemento.href = enlace;
       document.querySelector('#redes').append(elemento);
     }
+
+    mostrarCatalogo();
   </script>
 </body>
 </html>
